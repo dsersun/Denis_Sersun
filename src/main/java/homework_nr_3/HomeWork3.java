@@ -3,7 +3,7 @@ package homework_nr_3;
 public class HomeWork3 {
     public static void main (String[] args) {
         // 1 part
-        int day = 3;
+        int day = 9;
         switch (day){
             case 1:
                 System.out.println ("Январь");
@@ -44,5 +44,22 @@ public class HomeWork3 {
             default:
                 System.out.println ("Число не соответствует номеру месяца!");
         }
+
+        // 2 part
+        System.out.println ("Серия кратных 5-ти чисел, от 100 до 1000: ");
+        for (int i=100;i<=1000;i++){
+            if (i%5==0){
+                System.out.print(i+" ");
+            }
+        }
+
+        // part 3
+        System.out.println();
+        double result = 0;
+        for(int i = 1; i <=97; i+=2){
+            result += (double) i/(i+2);
+        }
+        System.out.println ("Рядом Арифметических Пропорций = " + result);
+
     }
 }
