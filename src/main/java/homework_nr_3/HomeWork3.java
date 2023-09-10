@@ -3,7 +3,7 @@ package homework_nr_3;
 public class HomeWork3 {
     public static void main (String[] args) {
         // 1 part
-        int day = 1;
+        int day = 3;
         switch (day){
             case 1:
                 System.out.println ("Январь");
