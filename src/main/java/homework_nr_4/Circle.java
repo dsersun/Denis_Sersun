@@ -5,6 +5,10 @@ public class Circle {
         Circle FirstCircle = new Circle(10.601);
 
         FirstCircle.calculateArea();
+
+        // Acces to TemperatureConverter class method in other class
+        TemperatureConverter t3 = new TemperatureConverter ();
+        System.out.println (t3.toCelsius (95F));
     }
 
     public Circle (double radius){

@@ -11,11 +11,11 @@ public class TemperatureConverter {
         System.out.println (t2);
     }
 
-    private float toFahrenheit (float temp) {
+    public float toFahrenheit (float temp) {
         return (float) (temp*1.8)+32;
     }
 
-    private float toCelsius (float temp) {
+    public float toCelsius (float temp) {
         return (float) ((temp-32)/1.8);
     }
 }
