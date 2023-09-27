@@ -16,3 +16,4 @@ public interface Animal {
         return initialPosition += step;
     }
 }
+
