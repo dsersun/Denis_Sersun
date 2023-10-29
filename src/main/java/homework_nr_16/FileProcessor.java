@@ -30,7 +30,7 @@ public class FileProcessor{
             //return;
         } catch (
                 IOException e) {
-            throw new RuntimeException (e);
+            System.err.println ("Input Output exceptions : " + e.getMessage ());
         }
 
         // obtain averageScore, youngest and oldest people from input list
