@@ -8,84 +8,77 @@ import java.util.Scanner;
 
 public class Main {
     public static void main (String[] args) {
-        TaskManager tm = new TaskManager();
-        Scanner scanner = new Scanner(System.in);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        TaskManager tm = new TaskManager ();
+        Scanner scanner = new Scanner (System.in);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern ("yyyy-MM-dd");
         Priority priority = null;
 
         try {
             while (true) {
-                System.out.println ("Выберите действие:");
-                System.out.println ("1. Добавить задачу");
-                System.out.println ("2. Пометить задачу как В Процессе");
-                System.out.println ("3. Пометить задачу как выполненную");
-                System.out.println ("4. Отобразить список задач");
-                System.out.println ("5. Удалить задачу");
-                System.out.println ("6. Выйти");
+                System.out.println (Color.BLUE + "Выберите действие:" + Color.RESET);
+                System.out.println (Color.RED + "1" + Color.RESET + ". Добавить задачу");
+                System.out.println (Color.RED + "2" + Color.RESET + ". Пометить задачу как В Процессе");
+                System.out.println (Color.RED + "3" + Color.RESET + ". Пометить задачу как выполненную");
+                System.out.println (Color.RED + "4" + Color.RESET + ". Отобразить список задач");
+                System.out.println (Color.RED + "5" + Color.RESET + ". Удалить задачу");
+                System.out.println (Color.RED + "6. Выйти" + Color.RESET);
                 int choice = scanner.nextInt ();
-                scanner.nextLine (); // Считываем перевод строки
+                scanner.nextLine ();
 
                 switch (choice) {
                     case 1:
-                        System.out.print ("Введите название задачи: ");
+                        System.out.print ("Введите название задачи (не должно быть пустым): ");
                         String title = scanner.nextLine ();
-                        System.out.print ("Введите описание задачи: ");
+                        System.out.print ("Введите описание задачи (если необходимо): ");
                         String description = scanner.nextLine ();
                         System.out.print ("Введите приоритет задачи (LOW, MEDIUM, HIGH): ");
                         String priorityString = scanner.nextLine ().toUpperCase ();
                         try {
                             priority = Priority.valueOf (priorityString);
                         } catch (IllegalArgumentException ignored) {
-
                         }
-
-                        System.out.print ("Введите дедлайн (гггг-мм-дд): ");
+                        System.out.print ("Введите дедлайн (формат: гггг-мм-дд): ");
                         String deadlineStr = scanner.nextLine ();
-                        Status status = Status.TODO;
+                        Status status = Status.TODO; // initial default status for new task
                         try {
                             LocalDate deadline = LocalDate.parse (deadlineStr, formatter);
                             if (priority == null) priority = Priority.LOW; // default priority is LOW
                             AddTaskAction addAction = new AddTaskAction (tm, title, description, priority, deadline, status);
                             addAction.perform ();
-                            System.out.println ("Задача добавлена.");
+                            System.out.println (Color.BLUE + "Задача добавлена." + Color.RESET);
                         } catch (TaskActionException e) {
-                            System.out.println ("Ошибка: " + e.getMessage ());
+                            System.err.println ("Ошибка: " + e.getMessage ());
                         } catch (DateTimeParseException e) {
-                            System.err.println ("Incorrect format for Task deadline " + e.toString ());
+                            System.err.println ("Incorrect format for Task deadline " + e.getMessage ());
                         }
                         break;
-
                     case 2:
-                        // make In Progress
                         tm.displayTasks ();
-                        System.out.print ("Введите номер задачи к выполнению: ");
-                        int taskIndex = scanner.nextInt ();
-                        scanner.nextLine (); // Считываем перевод строки
-
-                        if (taskIndex >= 0 && taskIndex < tm.getTasks ().size ()) {
-                            Task selectedTask = tm.getTasks ().get (taskIndex);
-                            tm.InProgressTask (selectedTask);
-                            System.out.println ("Задача помечена как - В Процессе.");
-                        } else {
-                            System.out.println ("Неверный номер задачи.");
+                        if (!tm.getTasks ().isEmpty ()) {
+                            System.out.print ("Введите номер задачи к выполнению: ");
+                            int taskIndex = scanner.nextInt ();
+                            scanner.nextLine ();
+                            if (taskIndex > 0 && taskIndex < tm.getTasks ().size () + 1) {
+                                Task selectedTask = tm.getTasks ().get (taskIndex - 1);
+                                tm.InProgressTask (selectedTask);
+                            } else {
+                                System.out.println (Color.RED + "Неверный номер задачи." + Color.RESET);
+                            }
                         }
                         break;
-
                     case 3:
                         tm.displayTasks ();
                         System.out.print ("Введите номер задачи для завершения: ");
                         int taskIndex2 = scanner.nextInt ();
-                        scanner.nextLine (); // Считываем перевод строки
+                        scanner.nextLine ();
 
-                        if (taskIndex2 >= 0 && taskIndex2 < tm.getTasks ().size ()) {
-                            Task taskToComplete = tm.getTasks ().get (taskIndex2);
+                        if (taskIndex2 > 0 && taskIndex2 < tm.getTasks ().size () + 1) {
+                            Task taskToComplete = tm.getTasks ().get (taskIndex2 - 1);
                             tm.completeTask (taskToComplete);
-                            System.out.println ("Задача помечена как выполненная.");
                         } else {
-                            System.out.println ("Неверный номер задачи.");
+                            System.out.println (Color.RED + "Неверный номер задачи." + Color.RESET);
                         }
                         break;
-
                     case 4:
                         tm.displayTasks ();
                         break;
@@ -93,30 +86,27 @@ public class Main {
                         tm.displayTasks ();
                         System.out.print ("Введите номер задачи для удаления: ");
                         int taskIndex3 = scanner.nextInt ();
-                        scanner.nextLine (); // Считываем перевод строки
+                        scanner.nextLine ();
 
-                        if (taskIndex3 >= 0 && taskIndex3 < tm.getTasks ().size ()) {
-                            Task taskToDelete = tm.getTasks ().get (taskIndex3);
+                        if (taskIndex3 > 0 && taskIndex3 < tm.getTasks ().size () + 1) {
+                            Task taskToDelete = tm.getTasks ().get (taskIndex3 - 1);
                             tm.deleteTask (taskToDelete);
-                            System.out.println ("Задача удалена.");
+                            System.out.println (Color.RED + "Задача удалена." + Color.RESET);
                         } else {
-                            System.out.println ("Неверный номер задачи.");
+                            System.out.println (Color.RED + "Неверный номер задачи." + Color.RESET);
                         }
                         break;
                     case 6:
-                        System.out.println ("Программа завершена.");
+                        System.out.println (Color.PURPLE + "Программа завершена." + Color.RESET);
                         scanner.close ();
                         System.exit (0);
                         break;
-
                     default:
-                        System.out.println ("Неверный выбор. Попробуйте снова.");
-
+                        System.out.println (Color.RED + "Неверный выбор. Попробуйте снова." + Color.RESET);
                 }
             }
-        }catch (InputMismatchException e) {
-            System.err.println ("You input incorrect value. Only integer is accepted. " + e.toString ());
+        } catch (InputMismatchException e) {
+            System.err.println ("You input incorrect value. Only integer is accepted. " + e);
         }
     }
 }
-

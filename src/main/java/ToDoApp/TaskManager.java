@@ -1,34 +1,46 @@
 package ToDoApp;
 
 import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class TaskManager {
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks = new ArrayList<> ();
 
-    public void addTask(Task task) {
+    public void addTask (Task task) {
         tasks.add (task);
     }
 
-    public void displayTasks(){
-        for(Task task : tasks) {
-            System.out.println("Название: " + task.getTaskName ());
-            System.out.println("Описание: " + task.getTaskDescription ());
-            System.out.println("Приоритет: " + task.getTaskPriority ());
-            System.out.println("Дедлайн: " + task.getDeadlineTask ());
-            System.out.println("Статус: " + task.getTaskStatus ());
-            System.out.println("-------------------------");
+    public void displayTasks () {
+        if (tasks.isEmpty ()) {
+            System.out.println ("Список задач пустой!\n");
+        } else {
+            int index = 1;
+            for (Task task : tasks) {
+                System.out.println ("+-------------------Task # " + (index++) + "--------------------------+");
+                System.out.println ("Название: " + Color.GREEN + task.getTaskName () + Color.RESET);
+                System.out.println ("Описание: " + Color.GREEN + task.getTaskDescription () + Color.RESET);
+                System.out.println ("Приоритет: " + task.getTaskPriority ().getPriorityDescription ());
+                System.out.println ("Дедлайн: " + Color.GREEN + task.getDeadlineTask () + Color.RESET);
+                System.out.println ("Статус: " + task.getTaskStatus ().getStatusDescription ());
+                System.out.println ("+--------------------------------------------------+");
+            }
         }
     }
 
-    public void InProgressTask(Task task) {
-        task.setTaskStatus (Status.IN_PROGRESS);
-        System.out.println ("Task obtain status " + task.taskStatus.getStatusDescription ());
+    public void InProgressTask (Task task) {
+        if (task.getTaskStatus () != Status.IN_PROGRESS) {
+            task.setTaskStatus (Status.IN_PROGRESS);
+            System.out.println (Color.GREEN + "Задача помечена как " + task.taskStatus.getStatusDescription ());
+        } else {
+            System.out.println (Color.PURPLE + "Задача уже" + task.taskStatus.getStatusDescription ());
+        }
     }
-    public void completeTask(Task task) {
-        CompleteTaskAction completeAction = new CompleteTaskAction(task);
+
+    public void completeTask (Task task) {
+        CompleteTaskAction completeAction = new CompleteTaskAction (task);
         try {
             completeAction.perform ();
         } catch (TaskActionException e) {
@@ -36,7 +48,7 @@ public class TaskManager {
         }
     }
 
-    public void deleteTask(Task task){
+    public void deleteTask (Task task) {
         tasks.remove (task);
     }
 }

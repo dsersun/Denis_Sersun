@@ -1,10 +1,11 @@
 package ToDoApp;
 
 import lombok.Data;
+
 import java.time.LocalDate;
 
 @Data
-public class AddTaskAction implements TaskAction{
+public class AddTaskAction implements TaskAction {
     private TaskManager taskManager;
     private String taskName;
     private String taskDescription;
@@ -25,13 +26,9 @@ public class AddTaskAction implements TaskAction{
     @Override
     public void perform () throws TaskActionException {
         if (taskName == null || taskName.isEmpty ()) {
-            throw new TaskActionException ("Task name can't be empty.");
+            throw new TaskActionException ("Название задачи не может быть пустым.");
         }
         Task newTask = new Task (taskName, taskDescription, taskPriority, deadlineTask, taskStatus);
-        taskManager.addTask(newTask);
+        taskManager.addTask (newTask);
     }
-
-
-// Add new task
-
 }
