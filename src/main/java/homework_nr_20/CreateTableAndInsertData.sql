@@ -1,3 +1,4 @@
+-- initial script for create and insert values in tables
 CREATE TABLE departments
 (
     department_id   INT PRIMARY KEY,
