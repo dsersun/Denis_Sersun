@@ -2,10 +2,6 @@ package homework_nr_21;
 
 public class Main {
     public static void main(String[] args) {
-
-        System.out.println(System.getenv("DB_PASSWORD"));
-        System.out.println(System.getenv("DB_USER"));
-        System.out.println(System.getenv("DB_URL"));
         Student.AddStudent();
         Student.ViewAllStudents();
 
